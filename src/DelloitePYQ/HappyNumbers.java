@@ -17,7 +17,9 @@ The happy numbers between 1 and 20 are 1, 7, 10, 13, and 19. */
 package DelloitePYQ;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 public class HappyNumbers {
     public static void main(String[] args) {
@@ -31,18 +33,37 @@ public class HappyNumbers {
     }
 
     public static ArrayList<Integer> findHappyNumbers(int start, int end) {
-        ArrayList<Integer> result = new ArrayList<>();
+
+        ArrayList<Integer> happyList = new ArrayList<>();
+
         for (int i = start; i <= end; i++) {
-            int rem;
-            int sq = 0;
-            while (i > 0) {
-                rem = i % 10;
-                sq = sq * 10 + rem * rem;
-                i /= 10;
+            if (isHappy(i)) {
+                happyList.add(i);
             }
         }
 
-        return result;
+        return happyList;
+    }
+
+    public static boolean isHappy(int n) {
+        Set<Integer> seen = new HashSet<>();
+
+        while (n != 1 && !seen.contains(n)) {
+            seen.add(n);
+            n = findSumOfDigitSq(n);
+        }
+
+        return n == 1;
+    }
+
+    public static int findSumOfDigitSq(int n) {
+        int digit, sum = 0;
+        while (n > 0) {
+            digit = n % 10;
+            sum = sum + digit * digit;
+            n /= 10;
+        }
+        return sum;
     }
 
 }
